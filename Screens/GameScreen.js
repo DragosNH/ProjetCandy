@@ -1,5 +1,7 @@
+import React from 'react';
 import { Text, View, } from 'react-native'
-import GameBtn from './Screens/GameBtn';
+import GameBtn from '../Functions/GameBtn';
+import styles from './style';
 
 const GameScreen = ({ navigation }) => {
   return (

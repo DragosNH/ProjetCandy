@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, Text } from "react-native";
-import styles from "./style";
+import styles from "../Screens/style";
 
 const GameBtn = (props) => {
 
