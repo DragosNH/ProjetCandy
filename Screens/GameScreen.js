@@ -1,14 +1,17 @@
 import React from 'react';
-import { Text, View, } from 'react-native'
+import { View } from 'react-native'
 import GameBtn from '../Functions/GameBtn';
+import Grid from '../Components/game/Grid';
 import styles from './style';
 
 const GameScreen = ({ navigation }) => {
+  const isPlaying = true; 
+
   return (
     <View style={styles.container}>
+      <GameBtn name="New Game" />
       <View style={styles.BtnRow}>
-        <GameBtn name="New Game" />
-        <GameBtn name="High Scores" />
+        {isPlaying ? <Grid /> : <GameBtn name="High Scores" />}
       </View>
     </View>
   );
