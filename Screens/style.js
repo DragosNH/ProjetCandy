@@ -24,15 +24,19 @@ const styles = StyleSheet.create({
     // ********* Grid *********
 
     gridContainer: {
-      flex: 1,
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
       padding: 10,
-  },
-
-  row: {
+    },
+    row: {
       flexDirection: 'row',
-  },
+    },
+    cell: {
+      width: 50,
+      height: 50,
+      margin: 2,
+    },
 
   square: {
       width: 45,
