@@ -1,13 +1,14 @@
-import React from "react";
-import { View } from "react-native-web";
-import styles from "../../Screens/style";
+import React from 'react';
+import { View } from 'react-native'; // Fixed incorrect import
+import styles from '../../Screens/style';
 
-const Sqare = () => {
-    return(
-        <View style={styles.gridContainer}>
-            <View style={styles.sqareIcon}></View>
-        </View>
-    )
-}
+const Square = () => {
+  return (
 
-export default Sqare
+    <View style={styles.square}>
+      <View style={styles.squareIcon}></View>
+    </View>
+  );
+};
+
+export default Square;

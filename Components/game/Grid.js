@@ -1,35 +1,54 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, PanResponder, StyleSheet } from 'react-native';
 import styles from '../../Screens/style';
-import Square from './Square';
 
-const Grid = ({ navigation }) => {
-  function makeCell(amount) {
-    const squareCell = [];
-    for (let i = 0; i < amount; i++) {
-      squareCell.push(<Text><Square key={i} /></Text>);
-    }
-    return squareCell;
-  }
+const Grid = () => {
+  // Initial grid, going to change it latter
+  const [grid, setGrid] = useState([
+    ['red', 'blue', 'green', 'yellow', 'purple'],
+    ['yellow', 'red', 'blue', 'green', 'purple'],
+    ['green', 'yellow', 'purple', 'red', 'blue'],
+    ['blue', 'green', 'red', 'purple', 'yellow'],
+    ['purple', 'blue', 'yellow', 'green', 'red'],
+  ]);
 
-  function makeGrid(amount) {
-    const squareStock = [];
-    for (let rows = 0; rows < amount; rows++) {
-      squareStock.push(
-        <View style={styles.row} key={rows}>
-          <Text>{makeCell(amount)}</Text>
-        </View>
-      );
-    }
-    return squareStock;
-  }
+  // Swap grid items
+  const swapItems = (row, col1, col2) => {
+    const newGrid = [...grid];
+    [newGrid[row][col1], newGrid[row][col2]] = [newGrid[row][col2], newGrid[row][col1]];
+    setGrid(newGrid);
+  };
+
+  const createPanResponder = (row, col) => {
+    return PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderRelease: (evt, gestureState) => {
+        if (Math.abs(gestureState.dx) > 30) {
+          // horizontal movement
+          if (gestureState.dx > 0 && col < grid[row].length - 1) {
+            swapItems(row, col, col + 1); 
+          } else if (gestureState.dx < 0 && col > 0) {
+            swapItems(row, col, col - 1); 
+          }
+        }
+      },
+    });
+  };
 
   return (
     <View style={styles.gridContainer}>
-      {makeGrid(8)}
+      {grid.map((row, rowIndex) => (
+        <View style={styles.row} key={rowIndex}>
+          {row.map((color, colIndex) => (
+            <View
+              key={`${rowIndex}-${colIndex}`}
+              {...createPanResponder(rowIndex, colIndex).panHandlers}
+              style={[styles.cell, { backgroundColor: color }]}
+            />
+          ))}
+        </View>
+      ))}
     </View>
-
-
   );
 };
 
