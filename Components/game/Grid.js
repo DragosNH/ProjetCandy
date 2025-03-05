@@ -1,38 +1,29 @@
 import React, { useState } from 'react';
-import { View, PanResponder, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import styles from '../../Screens/style';
+import GestureRecognizer from 'react-native-swipe-gestures';
+
+const coloredItems = ['red', 'blue', 'yellow', 'purple', 'green', 'brown', 'black', 'white'];
+
+// Generate grid with random colors
+const customGrid = (rows, cols) => {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => coloredItems[Math.floor(Math.random() * coloredItems.length)])
+  );
+};
 
 const Grid = () => {
-  // Initial grid, going to change it latter
-  const [grid, setGrid] = useState([
-    ['red', 'blue', 'green', 'yellow', 'purple'],
-    ['yellow', 'red', 'blue', 'green', 'purple'],
-    ['green', 'yellow', 'purple', 'red', 'blue'],
-    ['blue', 'green', 'red', 'purple', 'yellow'],
-    ['purple', 'blue', 'yellow', 'green', 'red'],
-  ]);
+  const [numRows, setNumRows] = useState(8);
+  const [numCols, setNumCols] = useState(8);
+  const [grid, setGrid] = useState(() => customGrid(numRows, numCols));
 
-  // Swap grid items
-  const swapItems = (row, col1, col2) => {
-    const newGrid = [...grid];
-    [newGrid[row][col1], newGrid[row][col2]] = [newGrid[row][col2], newGrid[row][col1]];
+  // swamp items
+  const swapItems = (row, firstCol, secondCol) => {
+    console.log(`Swapping row ${row}, col ${firstCol} <-> col ${secondCol}`);
+    
+    const newGrid = grid.map(rowArr => [...rowArr]); 
+    [newGrid[row][firstCol], newGrid[row][secondCol]] = [newGrid[row][secondCol], newGrid[row][firstCol]]; 
     setGrid(newGrid);
-  };
-
-  const createPanResponder = (row, col) => {
-    return PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        if (Math.abs(gestureState.dx) > 30) {
-          // horizontal movement
-          if (gestureState.dx > 0 && col < grid[row].length - 1) {
-            swapItems(row, col, col + 1); 
-          } else if (gestureState.dx < 0 && col > 0) {
-            swapItems(row, col, col - 1); 
-          }
-        }
-      },
-    });
   };
 
   return (
@@ -40,9 +31,18 @@ const Grid = () => {
       {grid.map((row, rowIndex) => (
         <View style={styles.row} key={rowIndex}>
           {row.map((color, colIndex) => (
-            <View
+            <GestureRecognizer
               key={`${rowIndex}-${colIndex}`}
-              {...createPanResponder(rowIndex, colIndex).panHandlers}
+              onSwipeLeft={() => {
+                if (colIndex > 0) {
+                  swapItems(rowIndex, colIndex, colIndex - 1);
+                }
+              }}
+              onSwipeRight={() => {
+                if (colIndex < numCols - 1) {
+                  swapItems(rowIndex, colIndex, colIndex + 1);
+                }
+              }}
               style={[styles.cell, { backgroundColor: color }]}
             />
           ))}
@@ -51,6 +51,5 @@ const Grid = () => {
     </View>
   );
 };
-
 
 export default Grid;
