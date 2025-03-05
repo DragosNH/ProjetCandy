@@ -21,6 +21,11 @@ const styles = StyleSheet.create({
         margin: 5,
     },
 
+    btnTxt:{
+       fontFamily: 'Bangers-Regular',
+       fontSize: 16,
+    },
+
     // ********* Grid *********
 
     gridContainer: {

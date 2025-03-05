@@ -6,7 +6,7 @@ const GameBtn = (props) => {
   return (
     <View>
       <TouchableOpacity style={styles.gameBtn}>
-        <Text>{props.name}</Text>
+        <Text style={styles.btnTxt}>{props.name}</Text>
       </TouchableOpacity>
     </View>
   );

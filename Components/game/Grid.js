@@ -19,7 +19,6 @@ const Grid = () => {
 
   // swamp items
   const swapItems = (row, firstCol, secondCol) => {
-    console.log(`Swapping row ${row}, col ${firstCol} <-> col ${secondCol}`);
     
     const newGrid = grid.map(rowArr => [...rowArr]); 
     [newGrid[row][firstCol], newGrid[row][secondCol]] = [newGrid[row][secondCol], newGrid[row][firstCol]]; 

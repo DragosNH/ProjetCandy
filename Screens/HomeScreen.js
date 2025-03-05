@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity 
                 style={styles.gameBtn}
                 onPress = {() => navigation.navigate('Game Screen')}> 
-                <Text>Start Game</Text>
+                <Text style={styles.btnTxt}>Start Game</Text>
             </TouchableOpacity>
         </View>
     )
