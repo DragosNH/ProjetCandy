@@ -13,7 +13,6 @@ const icons = [
   require('../../assets/images/spman.png'),
 ];
 
-// Generate grid with random images
 const customGrid = (rows, cols) => {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => icons[Math.floor(Math.random() * icons.length)])
@@ -25,10 +24,13 @@ const Grid = () => {
   const [numCols, setNumCols] = useState(8);
   const [grid, setGrid] = useState(() => customGrid(numRows, numCols));
 
-  // Swap items in the grid
   const swapItems = (row, firstCol, secondCol) => {
-    const newGrid = grid.map(rowArr => [...rowArr]); // Deep copy the grid
-    [newGrid[row][firstCol], newGrid[row][secondCol]] = [newGrid[row][secondCol], newGrid[row][firstCol]]; // Swap images
+    const newGrid = grid.map(rowArr => rowArr.slice());
+    
+    const temp = newGrid[row][firstCol];
+    newGrid[row][firstCol] = newGrid[row][secondCol];
+    newGrid[row][secondCol] = temp;
+    
     setGrid(newGrid);
   };
 
@@ -49,7 +51,7 @@ const Grid = () => {
                   swapItems(rowIndex, colIndex, colIndex + 1);
                 }
               }}
-              style={gridStyle.cell} // No backgroundColor, as we're using images
+              style={gridStyle.cell} 
             >
               <Image source={imagePath} style={gridStyle.image} />
             </GestureRecognizer>
