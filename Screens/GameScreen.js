@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native'
 import GameBtn from '../Functions/GameBtn';
 import Grid from '../Components/game/Grid';
-import styles from './style';
+import styles from '../style/style';
 
 const GameScreen = ({ navigation }) => {
   const isPlaying = true; 

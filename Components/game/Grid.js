@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import styles from '../../Screens/style';
+import { View, Image, gridStyleheet } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
+import { gridStyle } from '../../style/gridStyle';
 
 const icons = [
   require('../../assets/images/aqman.png'),
@@ -33,9 +33,9 @@ const Grid = () => {
   };
 
   return (
-    <View style={styles.gridContainer}>
+    <View style={gridStyle.gridContainer}>
       {grid.map((row, rowIndex) => (
-        <View style={styles.row} key={rowIndex}>
+        <View style={gridStyle.row} key={rowIndex}>
           {row.map((imagePath, colIndex) => (
             <GestureRecognizer
               key={`${rowIndex}-${colIndex}`}
@@ -49,9 +49,9 @@ const Grid = () => {
                   swapItems(rowIndex, colIndex, colIndex + 1);
                 }
               }}
-              style={styles.cell} // No backgroundColor, as we're using images
+              style={gridStyle.cell} // No backgroundColor, as we're using images
             >
-              <Image source={imagePath} style={styles.image} />
+              <Image source={imagePath} style={gridStyle.image} />
             </GestureRecognizer>
           ))}
         </View>
