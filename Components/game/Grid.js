@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import styles from '../../Screens/style';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
-const coloredItems = ['red', 'blue', 'yellow', 'purple', 'green', 'brown', 'black', 'white'];
+const icons = [
+  require('../../assets/images/aqman.png'),
+  require('../../assets/images/batm.png'),
+  require('../../assets/images/bzro.png'),
+  require('../../assets/images/dksid.png'),
+  require('../../assets/images/flsh.png'),
+  require('../../assets/images/riddl.png'),
+  require('../../assets/images/spman.png'),
+];
 
-// Generate grid with random colors
+// Generate grid with random images
 const customGrid = (rows, cols) => {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => coloredItems[Math.floor(Math.random() * coloredItems.length)])
+    Array.from({ length: cols }, () => icons[Math.floor(Math.random() * icons.length)])
   );
 };
 
@@ -17,11 +25,10 @@ const Grid = () => {
   const [numCols, setNumCols] = useState(8);
   const [grid, setGrid] = useState(() => customGrid(numRows, numCols));
 
-  // swamp items
+  // Swap items in the grid
   const swapItems = (row, firstCol, secondCol) => {
-    
-    const newGrid = grid.map(rowArr => [...rowArr]); 
-    [newGrid[row][firstCol], newGrid[row][secondCol]] = [newGrid[row][secondCol], newGrid[row][firstCol]]; 
+    const newGrid = grid.map(rowArr => [...rowArr]); // Deep copy the grid
+    [newGrid[row][firstCol], newGrid[row][secondCol]] = [newGrid[row][secondCol], newGrid[row][firstCol]]; // Swap images
     setGrid(newGrid);
   };
 
@@ -29,7 +36,7 @@ const Grid = () => {
     <View style={styles.gridContainer}>
       {grid.map((row, rowIndex) => (
         <View style={styles.row} key={rowIndex}>
-          {row.map((color, colIndex) => (
+          {row.map((imagePath, colIndex) => (
             <GestureRecognizer
               key={`${rowIndex}-${colIndex}`}
               onSwipeLeft={() => {
@@ -42,8 +49,10 @@ const Grid = () => {
                   swapItems(rowIndex, colIndex, colIndex + 1);
                 }
               }}
-              style={[styles.cell, { backgroundColor: color }]}
-            />
+              style={styles.cell} // No backgroundColor, as we're using images
+            >
+              <Image source={imagePath} style={styles.image} />
+            </GestureRecognizer>
           ))}
         </View>
       ))}
