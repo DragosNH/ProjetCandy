@@ -10,7 +10,7 @@ const homeScreenStyle = StyleSheet.create({
 
   titleImg: {
     width: 300,
-    height: 230
+    height: 209
   }
 })
 
