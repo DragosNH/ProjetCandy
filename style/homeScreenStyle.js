@@ -6,6 +6,7 @@ const homeScreenStyle = StyleSheet.create({
     backgroundColor: '#003367',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    fontFamily: 'Bangers',
   },
 
   titleImg: {

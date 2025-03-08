@@ -8,8 +8,15 @@ export const gameScreenStyle = StyleSheet.create({
         justifyContent: 'space-around',
       },
 
-      row:{
+      centerItems:{
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+
+      btnContainer:{
         flexDirection: 'row',
+        margin: 5,
+        marginTop: 10,
       },
 
       headerImg:{

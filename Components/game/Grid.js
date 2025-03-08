@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, LayoutAnimation, UIManager, Platform } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import { gridStyle } from '../../style/gridStyle';
 
 const icons = [
   require('../../assets/images/aqman.png'),
+  require('../../assets/images/revfl.png'),
   require('../../assets/images/batm.png'),
   require('../../assets/images/bzro.png'),
   require('../../assets/images/dksid.png'),
@@ -12,6 +13,11 @@ const icons = [
   require('../../assets/images/riddl.png'),
   require('../../assets/images/spman.png'),
 ];
+
+// --- Layout Animation ---
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 // --- Create grid with random icons ---
 const customGrid = (rows, cols) => {
@@ -27,58 +33,66 @@ const Grid = () => {
 
   // --- Swap Function ---
   const swapCells = (row1, col1, row2, col2) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const newGrid = grid.map(row => [...row]);
     const temp = newGrid[row1][col1];
     newGrid[row1][col1] = newGrid[row2][col2];
     newGrid[row2][col2] = temp;
-    
-    const processedGrid = processMatches(newGrid);
-    setGrid(processedGrid);
+    setGrid(newGrid);
+    setTimeout(() => processMatchesAsync(newGrid), 300);
+  };
+
+  // --- Process Matches Asynchronously with Fade Out ---
+  const processMatchesAsync = (currentGrid) => {
+    const matches = findMatches(currentGrid);
+    const { newGrid, matchFound } = removeMatches(currentGrid, matches);
+    if (!matchFound) {
+      setGrid(currentGrid);
+      return;
+    }
+    // --- Fade out matched icons ---
+    LayoutAnimation.configureNext({
+      duration: 300,
+      update: { type: LayoutAnimation.Types.easeInEaseOut },
+      delete: { type: LayoutAnimation.Types.easeInEaseOut, property: LayoutAnimation.Properties.opacity },
+    });
+    setGrid(newGrid);
+    // --- drop and fill cells ---
+    setTimeout(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+      const droppedGrid = dropCells(newGrid);
+      const filledGrid = fillEmptyCells(droppedGrid);
+      setGrid(filledGrid);
+      setTimeout(() => processMatchesAsync(filledGrid), 300);
+    }, 300);
   };
 
   // --- Match Detection ---
   const findMatches = (grid) => {
-    let matches = grid.map(row => row.map(() => false));
-
+    const matches = grid.map(row => row.map(() => false));
     for (let row = 0; row < numRows; row++) {
-      let matchLength = 1;
-      for (let col = 1; col < numCols; col++) {
-        if (grid[row][col] === grid[row][col - 1]) {
-          matchLength++;
-        } else {
-          if (matchLength >= 3) {
-            for (let k = col - matchLength; k < col; k++) {
-              matches[row][k] = true;
-            }
+      for (let col = 0; col < numCols; col++) {
+        const icon = grid[row][col];
+        if (!icon) continue;
+        // Check horizontal
+        if (col <= numCols - 3 &&
+            grid[row][col + 1] === icon &&
+            grid[row][col + 2] === icon) {
+          let c = col;
+          while (c < numCols && grid[row][c] === icon) {
+            matches[row][c] = true;
+            c++;
           }
-          matchLength = 1;
         }
-      }
-      if (matchLength >= 3) {
-        for (let k = numCols - matchLength; k < numCols; k++) {
-          matches[row][k] = true;
-        }
-      }
-    }
-
-    // --- Check for vertical matches ---
-    for (let col = 0; col < numCols; col++) {
-      let matchLength = 1;
-      for (let row = 1; row < numRows; row++) {
-        if (grid[row][col] === grid[row - 1][col]) {
-          matchLength++;
-        } else {
-          if (matchLength >= 3) {
-            for (let k = row - matchLength; k < row; k++) {
-              matches[k][col] = true;
-            }
+        // Check vertical
+        if (row <= numRows - 3 &&
+            grid[row + 1][col] === icon &&
+            grid[row + 2][col] === icon) {
+          let r = row;
+          while (r < numRows && grid[r][col] === icon) {
+            matches[r][col] = true;
+            r++;
           }
-          matchLength = 1;
-        }
-      }
-      if (matchLength >= 3) {
-        for (let k = numRows - matchLength; k < numRows; k++) {
-          matches[k][col] = true;
         }
       }
     }
@@ -132,19 +146,6 @@ const Grid = () => {
     return newGrid;
   };
 
-  // --- Matches ---
-  const processMatches = (grid) => {
-    let currentGrid = grid;
-    while (true) {
-      const matches = findMatches(currentGrid);
-      const { newGrid, matchFound } = removeMatches(currentGrid, matches);
-      if (!matchFound) break;
-      const droppedGrid = dropCells(newGrid);
-      currentGrid = fillEmptyCells(droppedGrid);
-    }
-    return currentGrid;
-  };
-
   return (
     <View style={gridStyle.gridContainer}>
       {grid.map((row, rowIndex) => (
@@ -152,33 +153,21 @@ const Grid = () => {
           {row.map((imagePath, colIndex) => (
             <GestureRecognizer
               key={`${rowIndex}-${colIndex}`}
-              // Swipe left: swap with left cell.
               onSwipeLeft={() => {
-                if (colIndex > 0) {
-                  swapCells(rowIndex, colIndex, rowIndex, colIndex - 1);
-                }
+                if (colIndex > 0) swapCells(rowIndex, colIndex, rowIndex, colIndex - 1);
               }}
-              // Swipe right: swap with right cell.
               onSwipeRight={() => {
-                if (colIndex < numCols - 1) {
-                  swapCells(rowIndex, colIndex, rowIndex, colIndex + 1);
-                }
+                if (colIndex < numCols - 1) swapCells(rowIndex, colIndex, rowIndex, colIndex + 1);
               }}
-              // Swipe up: swap with above cell.
               onSwipeUp={() => {
-                if (rowIndex > 0) {
-                  swapCells(rowIndex, colIndex, rowIndex - 1, colIndex);
-                }
+                if (rowIndex > 0) swapCells(rowIndex, colIndex, rowIndex - 1, colIndex);
               }}
-              // Swipe down: swap with below cell.
               onSwipeDown={() => {
-                if (rowIndex < numRows - 1) {
-                  swapCells(rowIndex, colIndex, rowIndex + 1, colIndex);
-                }
+                if (rowIndex < numRows - 1) swapCells(rowIndex, colIndex, rowIndex + 1, colIndex);
               }}
-              style={gridStyle.cell} 
+              style={gridStyle.cell}
             >
-              <Image source={imagePath} style={gridStyle.image} />
+              {imagePath && <Image source={imagePath} style={gridStyle.image} />}
             </GestureRecognizer>
           ))}
         </View>
@@ -188,4 +177,3 @@ const Grid = () => {
 };
 
 export default Grid;
-
