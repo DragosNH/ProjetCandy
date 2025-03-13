@@ -1,15 +1,13 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import styles from './style';
+import { View, Image } from 'react-native';
+import homeScreenStyle from '../style/homeScreenStyle';
+import GameBtn from '../Functions/GameBtn';
 
 const HomeScreen = ({ navigation }) => {
     return(
-        <View style={styles.container}>
-            <TouchableOpacity 
-                style={styles.gameBtn}
-                onPress = {() => navigation.navigate('Game Screen')}> 
-                <Text>Start Game</Text>
-            </TouchableOpacity>
+        <View style={homeScreenStyle.container}>
+            <Image style={homeScreenStyle.titleImg} source={require('../assets/images/title_img.png')} />
+            <GameBtn name="Start Game" onPress = {() => navigation.navigate('Game Screen')} />
         </View>
     )
 }

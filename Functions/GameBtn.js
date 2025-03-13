@@ -1,12 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
-import styles from '../Screens/style';
+import { btnStyle } from '../style/btnStyle';
 
 const GameBtn = (props) => {
   return (
     <View>
-      <TouchableOpacity style={styles.gameBtn}>
-        <Text>{props.name}</Text>
+      <TouchableOpacity style={btnStyle.gameBtn} onPress={props.onPress}>
+        <Text style={btnStyle.btnTxt}>{props.name}</Text>
       </TouchableOpacity>
     </View>
   );
