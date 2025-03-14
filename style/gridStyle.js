@@ -7,9 +7,17 @@ export const gridStyle = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
       },
+
+      gridBorder:{
+        borderWidth: 5,
+        borderColor: '#FFE500',
+        padding: 5,
+      },
+
       row: {
         flexDirection: 'row',
       },
+
       cell: {
         width: 40,
         height: 40,

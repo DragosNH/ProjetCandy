@@ -76,8 +76,8 @@ const Grid = () => {
         if (!icon) continue;
         // Check horizontal
         if (col <= numCols - 3 &&
-            grid[row][col + 1] === icon &&
-            grid[row][col + 2] === icon) {
+          grid[row][col + 1] === icon &&
+          grid[row][col + 2] === icon) {
           let c = col;
           while (c < numCols && grid[row][c] === icon) {
             matches[row][c] = true;
@@ -86,8 +86,8 @@ const Grid = () => {
         }
         // Check vertical
         if (row <= numRows - 3 &&
-            grid[row + 1][col] === icon &&
-            grid[row + 2][col] === icon) {
+          grid[row + 1][col] === icon &&
+          grid[row + 2][col] === icon) {
           let r = row;
           while (r < numRows && grid[r][col] === icon) {
             matches[r][col] = true;
@@ -148,30 +148,32 @@ const Grid = () => {
 
   return (
     <View style={gridStyle.gridContainer}>
-      {grid.map((row, rowIndex) => (
-        <View style={gridStyle.row} key={rowIndex}>
-          {row.map((imagePath, colIndex) => (
-            <GestureRecognizer
-              key={`${rowIndex}-${colIndex}`}
-              onSwipeLeft={() => {
-                if (colIndex > 0) swapCells(rowIndex, colIndex, rowIndex, colIndex - 1);
-              }}
-              onSwipeRight={() => {
-                if (colIndex < numCols - 1) swapCells(rowIndex, colIndex, rowIndex, colIndex + 1);
-              }}
-              onSwipeUp={() => {
-                if (rowIndex > 0) swapCells(rowIndex, colIndex, rowIndex - 1, colIndex);
-              }}
-              onSwipeDown={() => {
-                if (rowIndex < numRows - 1) swapCells(rowIndex, colIndex, rowIndex + 1, colIndex);
-              }}
-              style={gridStyle.cell}
-            >
-              {imagePath && <Image source={imagePath} style={gridStyle.image} />}
-            </GestureRecognizer>
-          ))}
-        </View>
-      ))}
+      <View style={gridStyle.gridBorder}>
+        {grid.map((row, rowIndex) => (
+          <View style={gridStyle.row} key={rowIndex}>
+            {row.map((imagePath, colIndex) => (
+              <GestureRecognizer
+                key={`${rowIndex}-${colIndex}`}
+                onSwipeLeft={() => {
+                  if (colIndex > 0) swapCells(rowIndex, colIndex, rowIndex, colIndex - 1);
+                }}
+                onSwipeRight={() => {
+                  if (colIndex < numCols - 1) swapCells(rowIndex, colIndex, rowIndex, colIndex + 1);
+                }}
+                onSwipeUp={() => {
+                  if (rowIndex > 0) swapCells(rowIndex, colIndex, rowIndex - 1, colIndex);
+                }}
+                onSwipeDown={() => {
+                  if (rowIndex < numRows - 1) swapCells(rowIndex, colIndex, rowIndex + 1, colIndex);
+                }}
+                style={gridStyle.cell}
+              >
+                {imagePath && <Image source={imagePath} style={gridStyle.image} />}
+              </GestureRecognizer>
+            ))}
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
