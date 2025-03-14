@@ -9,7 +9,7 @@ export const btnStyle = StyleSheet.create({
     backgroundColor: '#003367',
     borderWidth: 5,
     borderColor: '#FFE500', // Yellow
-    padding: 10,
+    padding: 5,
     margin: 5,
   },
 

@@ -28,9 +28,9 @@ const RoundTimer = ({ onRoundEnd }) => {
   }, [timeLeft]);
 
   return (
-    <View style={roundTimerStyle.row}>
+    <View style={roundTimerStyle.container}>
       {gameOver ? (
-        <Text style={{ fontSize: 20, color: '#FFE500' }}>Game Over!</Text>
+        <Text style={roundTimerStyle.txt}>Game Over!</Text>
       ) : (
         <View style={roundTimerStyle.row}>
           <Text style={roundTimerStyle.txt}>Round: {round}</Text>

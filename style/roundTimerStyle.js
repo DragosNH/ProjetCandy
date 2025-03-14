@@ -1,15 +1,20 @@
-import { StyleSheet } from "react-native";
+    import { StyleSheet } from "react-native";
 
-export const roundTimerStyle = StyleSheet.create({
-    row: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
+    export const roundTimerStyle = StyleSheet.create({
+        container:{
+            justifyContent: 'space-around',
+            alignItems: 'center'
+        },
 
-    txt:{
-        fontSize: 20, 
-        color: '#FFE500',
-        fontFamily: 'Bangers-Regular',
-    },
-})
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            width: '100%'
+        },
+
+        txt:{
+            fontSize: 20, 
+            color: '#FFE500',
+            fontFamily: 'Bangers-Regular',
+        },
+    })

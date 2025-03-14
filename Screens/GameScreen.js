@@ -35,10 +35,11 @@ const GameScreen = ({ navigation }) => {
         </View>
       </View>
 
-      <RoundTimer key={gameKey} onRoundEnd={handleRoundEnd} />
-
-      <View style={gameScreenStyle.BtnRow}>
-        {isPlaying ? <Grid key={gameKey} /> : <GameBtn name="High Scores" />}
+      <View>
+        <RoundTimer key={gameKey} onRoundEnd={handleRoundEnd} />
+        <View>
+          {isPlaying ? <Grid key={gameKey} /> : <GameBtn name="High Scores" />}
+        </View>
       </View>
 
       <PowerBar />
