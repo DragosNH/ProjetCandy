@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import GameBtn from '../Functions/GameBtn';
 import Grid from '../Components/game/Grid';
 import PowerBar from '../Functions/PowerBar';
@@ -9,23 +9,28 @@ import { gameScreenStyle } from '../style/gameScreenStyle';
 const GameScreen = ({ navigation }) => {
   const [gameKey, setGameKey] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [score, setScore] = useState(0);
 
   const handleRoundEnd = (round, gameOver) => {
-    console.log(`Round ${round} ended!`);
     if (gameOver) {
       setIsPlaying(false);
     }
   };
 
+  const updateScore = (points) => {
+    setScore(prevScore => prevScore + points);
+  };
+
   const startNewGame = () => {
     setGameKey(prevKey => prevKey + 1);
     setIsPlaying(true);
+    setScore(0);
   };
 
   return (
     <View style={gameScreenStyle.container}>
       <View style={gameScreenStyle.centerItems}>
-        <Image
+        <Image 
           style={gameScreenStyle.headerImg}
           source={require('../assets/images/header_img.png')}
         />
@@ -36,9 +41,14 @@ const GameScreen = ({ navigation }) => {
       </View>
 
       <View>
+        <Text style={gameScreenStyle.txt}>Score: {score}</Text>
         <RoundTimer key={gameKey} onRoundEnd={handleRoundEnd} />
         <View>
-          {isPlaying ? <Grid key={gameKey} /> : <GameBtn name="High Scores" />}
+          {isPlaying ? (
+            <Grid key={gameKey} onScoreUpdate={updateScore} />
+          ) : (
+            <GameBtn name="High Scores" />
+          )}
         </View>
       </View>
 

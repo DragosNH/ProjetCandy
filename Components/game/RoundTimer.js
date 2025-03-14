@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { roundTimerStyle } from '../../style/roundTimerStyle';
 
 const RoundTimer = ({ onRoundEnd }) => {
-  const initialRoundTime = 90; 
+  const initialRoundTime = 90;
   const [round, setRound] = useState(1);
   const [timeLeft, setTimeLeft] = useState(initialRoundTime);
   const [currentRoundTime, setCurrentRoundTime] = useState(initialRoundTime);
@@ -13,7 +13,7 @@ const RoundTimer = ({ onRoundEnd }) => {
     if (timeLeft <= 0) {
       if (currentRoundTime === 10) {
         setGameOver(true);
-        onRoundEnd && onRoundEnd(round, true); 
+        onRoundEnd && onRoundEnd(round, true);
         return;
       }
       onRoundEnd && onRoundEnd(round, false);
@@ -34,7 +34,7 @@ const RoundTimer = ({ onRoundEnd }) => {
       ) : (
         <View style={roundTimerStyle.row}>
           <Text style={roundTimerStyle.txt}>Round: {round}</Text>
-          <Text style={roundTimerStyle.txt}>Time left: {timeLeft} sec</Text>
+          <Text style={roundTimerStyle.txt}>Timer: {timeLeft}</Text>
         </View>
       )}
     </View>
