@@ -7,6 +7,9 @@ export const btnStyle = StyleSheet.create({
     borderColor: '#FFE500',
     padding: 5,
     margin: 5,
+    width: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   btnTxt: {
     fontFamily: 'Bangers-Regular',

@@ -30,6 +30,8 @@ const Grid = ({ onScoreUpdate }) => {
   const numCols = 8;
   const [grid, setGrid] = useState(() => customGrid(numRows, numCols));
 
+
+  // Swap cells   
   const swapCells = (row1, col1, row2, col2) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const newGrid = grid.map(row => [...row]);

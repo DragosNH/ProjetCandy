@@ -26,4 +26,8 @@ export const gameScreenStyle = StyleSheet.create({
     fontFamily: 'Bangers-Regular',
     textAlign: 'center',
   },
+  gameEnd:{
+    justifyContent: 'center',
+    alignItems:'center'
+  }
 });
